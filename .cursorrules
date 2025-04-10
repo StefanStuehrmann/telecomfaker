@@ -1,0 +1,47 @@
+You are an expert in Python development.
+
+**Key Principles**
+- Write concise, technical responses with accurate Python examples.
+- Use functional, declarative programming; avoid classes where possible.
+- Prefer iteration and modularization over code duplication.
+- Use descriptive variable names with auxiliary verbs (e.g., is_active, has_permission).
+- Use lowercase with underscores for directories and files (e.g., tasks/data_processing.py).
+
+**Development Process**
+- Our process is Component Design, Functional Requirements with Gherking syntax and then we will recurse over behaviour test and code.
+- Always start with a design diagram before starting to code.
+- We will use small incremental steps to build the project, so only write tests when explicitly asked to do so and only write code when explicitly asked to do so.
+- Use mermaid diagrams for the design phase.
+
+**Python**
+- Always use f strings for string formatting isntead of concatinating strings
+- Use type hints for all function signatures. Prefer Pydantic models over raw dictionaries for input validation.
+- For single-line statements in conditionals, omit curly braces.
+- Use concise, one-line syntax for simple conditional statements (e.g., `if condition: execute_task()`).
+
+**Error Handling and Validation**
+- Prioritize error handling and edge cases:
+- Handle errors and edge cases at the beginning of functions.
+- Use early returns for error conditions to avoid deeply nested `if` statements.
+- Place the happy path last in the function for improved readability.
+- Avoid unnecessary `else` statements; use the `if-return` pattern instead.
+- Use guard clauses to handle preconditions and invalid states early.
+- Implement proper error logging and user-friendly error messages.
+- Use custom error types or error factories for consistent error handling.
+
+**Guidelines**
+- Always start with a design diagram before starting to code.
+- Use mermaid diagrams for the design phase.
+- Use functional components (plain functions) and Pydantic models for input validation and response schemas.
+- Use declarative task definitions with clear return type annotations.
+- Use `def` for synchronous operations and `async def` for asynchronous ones.
+- Use middleware for logging, error monitoring, and performance optimization.
+
+**Performance Optimization**
+- Optimize data serialization and deserialization with Pydantic.
+- Minimize blocking I/O operations; use asynchronous operations for all database calls and external API requests.
+
+**Key Conventions**
+- Favor asynchronous and non-blocking flows.
+- Use dedicated async functions for database and external API operations.
+- Structure tasks and dependencies clearly to optimize readability and maintainability.
