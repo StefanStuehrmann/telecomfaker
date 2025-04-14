@@ -45,7 +45,7 @@ setup(
     },
     python_requires=">=3.8",
     install_requires=[
-        "pydantic>=2.11.3",
+        "pydantic>=1.10.8,<=2.11.3",
     ],
     entry_points={
         "console_scripts": [

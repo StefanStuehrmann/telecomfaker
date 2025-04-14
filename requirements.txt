@@ -1,5 +1,5 @@
 # Runtime dependencies
-pydantic>=2.11.3
+pydantic>=1.10.8,<2.11.3
 
 # Development dependencies
 behave>=1.2.6
