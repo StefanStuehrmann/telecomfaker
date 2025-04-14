@@ -51,6 +51,11 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+4. Install the package in development mode:
+```bash
+pip install -e .
+```
+
 ## Development
 
 ### Running Tests
@@ -65,8 +70,9 @@ Run unit tests with pytest:
 pytest
 ```
 
-
 ## Quick Start
+
+### Python API
 
 ```python
 from telecomfaker import TelecomFaker
@@ -76,14 +82,65 @@ faker = TelecomFaker()
 
 # Get a random operator with all associated information
 result = faker.generate_operator()
-operator = result["operator"]
-numbering = result["numbering"]
+operator = result
 
 print(f"Random Operator: {operator['name']} ({operator['country']})")
 print(f"MCC: {operator['mcc']}, MNC: {operator['mnc']}")
-print(f"Size: {operator['size']} subscribers")
-print(f"Country Code: {operator['country_code']}")
-print(f"Mobile Prefixes: {operator['mobile_prefixes']}")
+print(f"Size: {operator['size']}")
+print(f"MVNO: {'Yes' if operator['is_mvno'] else 'No'}")
+```
+
+### Command Line Interface
+
+TelecomFaker includes a command-line interface for quick data generation:
+
+```bash
+# Generate a single operator in text format
+telecomfaker
+
+# Generate 5 operators in JSON format
+telecomfaker --count 5 --format json
+
+# Generate operators with a specific seed for reproducibility
+telecomfaker --seed 42
+
+# Save output to a file
+telecomfaker --count 10 --format json --output operators.json
+```
+
+#### CLI Options
+
+| Option | Description |
+|--------|-------------|
+| `--seed SEED` | Random seed for consistent generation |
+| `--count COUNT` | Number of operators to generate (default: 1) |
+| `--format {json,text}` | Output format (default: text) |
+| `--output FILE` | Output file (default: stdout) |
+
+#### Example Output (Text Format)
+
+```
+Operator: Vodafone
+Country: Germany
+MCC: 262
+MNC: 02
+Size: large
+Type: MNO
+```
+
+#### Example Output (JSON Format)
+
+```json
+[
+  {
+    "name": "Vodafone",
+    "country": "Germany",
+    "mcc": "262",
+    "mnc": "02",
+    "size": "large",
+    "is_mvno": false
+  }
+]
 ```
 
 ## Data Sources
