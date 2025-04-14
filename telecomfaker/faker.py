@@ -1,7 +1,9 @@
 import random
-from typing import Dict, Any, Optional, Union
+from typing import Dict, Any, Union, List, Optional
 
+from telecomfaker.models import TelecomOperator, OperatorSize
 from telecomfaker.providers import LocalJsonProvider
+
 
 class TelecomFaker:
     """
@@ -49,12 +51,12 @@ class TelecomFaker:
         """
         self.random.seed(seed)
     
-    def generate_operator(self) -> Dict[str, Any]:
+    def generate_operator(self) -> TelecomOperator:
         """
         Generate a random telecom operator with realistic information.
         
         Returns:
-            A dictionary containing operator information
+            A TelecomOperator instance with validated data
             
         Raises:
             RuntimeError: If the data source is unavailable or contains no operators
@@ -68,17 +70,44 @@ class TelecomFaker:
             if not operators:
                 raise ValueError("No operators found in the data source")
             
-            operator = self.random.choice(operators)
+            operator_data = self.random.choice(operators)
             
-            # Return a copy to prevent modifying the original data
-            return {
-                'name': operator.get('name', ''),
-                'country': operator.get('country', ''),
-                'mcc': operator.get('mcc', ''),
-                'mnc': operator.get('mnc', ''),
-                'size': operator.get('size', 'medium'),
-                'is_mvno': operator.get('is_mvno', False)
-            }
+            # Convert size string to enum if needed
+            size = operator_data.get('size', 'medium')
+            if isinstance(size, str):
+                try:
+                    size = OperatorSize(size.lower())
+                except ValueError:
+                    size = OperatorSize.MEDIUM
+            
+            # Create and return a validated TelecomOperator instance
+            return TelecomOperator(
+                name=operator_data.get('name', ''),
+                country=operator_data.get('country', ''),
+                mcc=operator_data.get('mcc', ''),
+                mnc=operator_data.get('mnc', ''),
+                size=size,
+                is_mvno=operator_data.get('is_mvno', False)
+            )
         except Exception as e:
             # Wrap the exception with a more informative message
-            raise RuntimeError(f"Failed to generate operator: {str(e)}. Please check the data source.") from e 
+            raise RuntimeError(f"Failed to generate operator: {str(e)}. Please check the data source.") from e
+    
+    def generate_operators(self, count: int = 1) -> List[TelecomOperator]:
+        """
+        Generate multiple random telecom operators.
+        
+        Args:
+            count: Number of operators to generate
+            
+        Returns:
+            A list of TelecomOperator instances
+            
+        Raises:
+            ValueError: If count is less than 1
+            RuntimeError: If the data source is unavailable
+        """
+        if count < 1:
+            raise ValueError("Count must be at least 1")
+            
+        return [self.generate_operator() for _ in range(count)] 

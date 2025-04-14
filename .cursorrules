@@ -111,6 +111,106 @@ def step_impl(context):
 - Prefer Pydantic models over raw dictionaries for input validation
 - Use concise, one-line syntax for simple conditional statements (e.g., `if condition: execute_task()`)
 
+## Pydantic Model Guidelines
+
+### Model Structure
+- Use Pydantic models for all data structures that require validation or serialization
+- Define models in dedicated module files (e.g., `models.py`)
+- Use descriptive field names with clear types
+- Add field descriptions using the `Field` class
+- Use enums for fields with a fixed set of possible values
+- Provide default values for optional fields
+
+### Example Pydantic Model
+
+✅ Good (Well-structured Pydantic model):
+```python
+from enum import Enum
+from typing import Optional, List
+from pydantic import BaseModel, Field
+
+class OperatorSize(str, Enum):
+    """Enum representing the size of a telecom operator."""
+    SMALL = "small"
+    MEDIUM = "medium"
+    LARGE = "large"
+
+class TelecomOperator(BaseModel):
+    """Model representing a telecom operator."""
+    name: str = Field(..., description="The name of the telecom operator")
+    country: str = Field(..., description="The country where the operator is based")
+    mcc: str = Field(..., description="Mobile Country Code (MCC)")
+    mnc: str = Field(..., description="Mobile Network Code (MNC)")
+    size: OperatorSize = Field(default=OperatorSize.MEDIUM, description="Size of the operator")
+    is_mvno: bool = Field(default=False, description="Whether the operator is an MVNO")
+    
+    class Config:
+        """Configuration for the TelecomOperator model."""
+        schema_extra = {
+            "example": {
+                "name": "Vodafone",
+                "country": "Germany",
+                "mcc": "262",
+                "mnc": "02",
+                "size": "large",
+                "is_mvno": False
+            }
+        }
+```
+
+### Serialization and Deserialization
+
+- Use the `.dict()` method to convert models to dictionaries
+- Use the `.json()` method to convert models to JSON strings
+- Use the `.parse_obj()` method to convert dictionaries to models
+- Use the `.parse_raw()` method to convert JSON strings to models
+- Compare model equality using `.dict()` when needed
+
+### Example Serialization/Deserialization
+
+```python
+# Serialization
+operator = TelecomOperator(name="Vodafone", country="Germany", mcc="262", mnc="02")
+operator_dict = operator.dict()  # Convert to dictionary
+operator_json = operator.json()  # Convert to JSON string
+
+# Deserialization
+from_dict = TelecomOperator.parse_obj(operator_dict)  # From dictionary
+from_json = TelecomOperator.parse_raw(operator_json)  # From JSON string
+
+# Comparison (models don't implement __eq__ by default)
+assert operator.dict() == from_dict.dict()
+```
+
+### Validation and Error Handling
+
+- Let Pydantic handle validation errors by default
+- Use try/except blocks to catch validation errors when needed
+- Create custom validators for complex validation logic
+- Use `Field` constraints for simple validations
+
+### Example Validation
+
+```python
+from pydantic import BaseModel, Field, validator
+
+class PhoneNumber(BaseModel):
+    country_code: str = Field(..., min_length=1, max_length=4)
+    number: str = Field(..., min_length=5, max_length=15)
+    
+    @validator('country_code')
+    def country_code_must_be_numeric(cls, v):
+        if not v.isdigit():
+            raise ValueError('Country code must contain only digits')
+        return v
+        
+    @validator('number')
+    def number_must_be_numeric(cls, v):
+        if not v.isdigit():
+            raise ValueError('Phone number must contain only digits')
+        return v
+```
+
 ## Error Handling and Validation
 - Handle errors and edge cases at the beginning of functions
 - Use early returns for error conditions to avoid deeply nested `if` statements

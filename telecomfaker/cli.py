@@ -5,11 +5,11 @@ Command-line interface for TelecomFaker.
 
 import argparse
 import json
-import random
 import sys
-from typing import Dict, Any
+from typing import List, Dict, Any
 
 from telecomfaker import TelecomFaker
+from telecomfaker.models import TelecomOperator
 
 
 def parse_args() -> argparse.Namespace:
@@ -47,17 +47,26 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def format_operator_as_text(operator: Dict[str, Any]) -> str:
+def format_operator_as_text(operator: TelecomOperator) -> str:
     """Format an operator as plain text."""
-    mvno_status = "MVNO" if operator.get("is_mvno") else "MNO"
+    mvno_status = "MVNO" if operator.is_mvno else "MNO"
     
     return (
-        f"Operator: {operator.get('name')}\n"
-        f"Country: {operator.get('country')}\n"
-        f"MCC: {operator.get('mcc')}\n"
-        f"MNC: {operator.get('mnc')}\n"
-        f"Size: {operator.get('size')}\n"
+        f"Operator: {operator.name}\n"
+        f"Country: {operator.country}\n"
+        f"MCC: {operator.mcc}\n"
+        f"MNC: {operator.mnc}\n"
+        f"Size: {operator.size.value}\n"
         f"Type: {mvno_status}\n"
+    )
+
+
+def operators_to_json(operators: List[TelecomOperator]) -> str:
+    """Convert operators to JSON string."""
+    # Use Pydantic's built-in JSON serialization
+    return json.dumps(
+        [operator.dict() for operator in operators],
+        indent=2
     )
 
 
@@ -72,12 +81,12 @@ def main() -> None:
     if args.seed is not None:
         faker.set_seed(args.seed)
     
-    # Generate operators
-    operators = [faker.generate_operator() for _ in range(args.count)]
+    # Generate operators using the new method
+    operators = faker.generate_operators(args.count)
     
     # Format output
     if args.format == "json":
-        output = json.dumps(operators, indent=2)
+        output = operators_to_json(operators)
     else:  # text format
         output = "\n".join(format_operator_as_text(op) for op in operators)
     

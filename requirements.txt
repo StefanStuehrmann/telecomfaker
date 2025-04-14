@@ -1,3 +1,6 @@
-# Testing dependencies
+# Runtime dependencies
+pydantic>=2.11.3
+
+# Development dependencies
 behave>=1.2.6
-PyHamcrest>=2.0.4
+PyHamcrest>=2.0.3
