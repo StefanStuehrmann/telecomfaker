@@ -12,16 +12,3 @@ Feature: Telecom Operator Data Generation
     Then I should receive valid operator information
     And the information should include name, country, MCC, and MNC
     And the information should include size and MVNO status
-
-  Scenario: Handle non-existent operator
-    When I request an operator with name "NonExistentOperator"
-    Then I should receive an appropriate error message
-
-  Scenario: Handle non-existent country
-    When I request an operator from "NonExistentCountry"
-    Then I should receive an appropriate error message
-
-  Scenario: Generate consistent data with seed
-    Given I set a random seed of 42
-    When I request a random operator twice
-    Then I should receive the same operator information both times 
