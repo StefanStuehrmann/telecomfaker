@@ -25,7 +25,7 @@ class TelecomOperator(BaseModel):
     
     class Config:
         """Configuration for the TelecomOperator model."""
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "name": "Vodafone",
                 "country": "Germany",

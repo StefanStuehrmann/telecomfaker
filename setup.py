@@ -46,6 +46,7 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         "pydantic>=1.10.8,<=2.11.3",
+        "setuptools>=42.0.0",  # For pkg_resources
     ],
     entry_points={
         "console_scripts": [
