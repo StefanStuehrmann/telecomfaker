@@ -4,8 +4,8 @@ Feature: Telecom Operator Data Generation
   So that I can create meaningful test scenarios for my applications
 
   Background:
-    Given the TelecomFaker package is installed
-    And the telecom data source is available
+    Given the TelecomFaker module is initialized
+    And the telecom data source is loaded
 
   Scenario: Generate a random telecom operator
     When I request a random telecom operator

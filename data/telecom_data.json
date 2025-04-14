@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Vodafone",
+    "country": "United Kingdom",
+    "mcc": "234",
+    "mnc": "15",
+    "size": "large",
+    "subscribers": 18000000,
+    "country_code": "44",
+    "mobile_prefixes": ["7"]
+  },
+  {
+    "name": "Orange",
+    "country": "France",
+    "mcc": "208",
+    "mnc": "01",
+    "size": "large",
+    "subscribers": 34000000,
+    "country_code": "33",
+    "mobile_prefixes": ["6", "7"]
+  },
+  {
+    "name": "T-Mobile",
+    "country": "Germany",
+    "mcc": "262",
+    "mnc": "01",
+    "size": "large",
+    "subscribers": 45000000,
+    "country_code": "49",
+    "mobile_prefixes": ["15", "16", "17"]
+  },
+  {
+    "name": "Movistar",
+    "country": "Spain",
+    "mcc": "214",
+    "mnc": "07",
+    "size": "medium",
+    "subscribers": 15000000,
+    "country_code": "34",
+    "mobile_prefixes": ["6", "7"]
+  },
+  {
+    "name": "3",
+    "country": "Sweden",
+    "mcc": "240",
+    "mnc": "02",
+    "size": "small",
+    "subscribers": 2000000,
+    "country_code": "46",
+    "mobile_prefixes": ["7"]
+  }
+] 

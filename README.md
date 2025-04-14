@@ -25,9 +25,46 @@ graph TD
 
 ## Installation
 
+### For Users
+
 ```bash
 pip install telecomfaker
 ```
+
+### For Developers
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/telecomfaker.git
+cd telecomfaker
+```
+
+2. Create and activate a virtual environment:
+```bash
+# Using venv
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install development dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+## Development
+
+### Running Tests
+
+Run BDD tests with Behave:
+```bash
+behave
+```
+
+Run unit tests with pytest:
+```bash
+pytest
+```
+
 
 ## Quick Start
 
@@ -38,17 +75,15 @@ from telecomfaker import TelecomFaker
 faker = TelecomFaker()
 
 # Get a random operator with all associated information
-result = faker.generate_operator(with_phone_number=True)
+result = faker.generate_operator()
 operator = result["operator"]
 numbering = result["numbering"]
-phone = result["phone_number"]
 
 print(f"Random Operator: {operator['name']} ({operator['country']})")
 print(f"MCC: {operator['mcc']}, MNC: {operator['mnc']}")
 print(f"Size: {operator['size']} subscribers")
-print(f"Country Code: {numbering['country_code']}")
-print(f"Mobile Prefixes: {numbering['mobile_prefixes']}")
-print(f"Sample Phone Number: {phone}")
+print(f"Country Code: {operator['country_code']}")
+print(f"Mobile Prefixes: {operator['mobile_prefixes']}")
 ```
 
 ## Data Sources
@@ -62,7 +97,11 @@ TelecomFaker uses real-world data compiled from:
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Commit your changes: `git commit -am 'Add some feature'`
+4. Push to the branch: `git push origin feature-name`
+5. Submit a pull request
 
 ## License
 
