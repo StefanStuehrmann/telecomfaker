@@ -21,11 +21,75 @@
 - Use Gherkin syntax (Given/When/Then) to specify behavior
 - Focus on one user story or feature at a time
 - Define acceptance criteria clearly
+- Write specifications from the user's perspective, not the implementation perspective
+- Use the "As a [role], I want [feature], So that [benefit]" format for feature descriptions
+
+### User-Focused Specification Examples
+
+✅ Good (User-Focused):
+```gherkin
+Feature: Telecom Data Source Management
+  As a telecom test engineer
+  I want to use different sources of telecom operator data
+  So that I can create realistic test scenarios with accurate information
+
+  Scenario: Use built-in telecom data for quick testing
+    When I need to quickly generate telecom test data
+    Then I should be able to use TelecomFaker without any configuration
+    And it should provide realistic operator information out of the box
+```
+
+❌ Bad (Implementation-Focused):
+```gherkin
+Feature: Telecom Data Source Management
+  As a developer
+  I want to use different data sources
+  So that I can have more data options
+
+  Scenario: Use default static data source
+    When I create a TelecomFaker instance with default settings
+    Then it should use the static JSON data source
+    And the data should be loaded from the JSON file
+```
 
 ## Testing Phase
 - Write behavior tests that match the Gherkin specifications
 - Focus on testing the behavior, not the implementation
 - Only proceed to implementation after tests are reviewed
+- Write step definitions that maintain the user perspective from the feature file
+- Avoid exposing implementation details in step definitions where possible
+- Test the "what" not the "how" - verify outcomes, not mechanisms
+
+### User-Focused Test Examples
+
+✅ Good (User-Focused):
+```python
+@when('I need to quickly generate telecom test data')
+def step_impl(context):
+    # Implementation can use technical details
+    context.faker = TelecomFaker()
+    
+@then('it should provide realistic operator information out of the box')
+def step_impl(context):
+    # Verify the outcome (realistic data) not the mechanism
+    operator = context.faker.generate_operator()
+    assert_that(operator, is_not(none()))
+    assert_that(operator, has_key('name'))
+    assert_that(operator, has_key('country'))
+```
+
+❌ Bad (Implementation-Focused):
+```python
+@when('I initialize the TelecomFaker with the StaticDataProvider')
+def step_impl(context):
+    context.faker = TelecomFaker(StaticDataProvider())
+    
+@then('the JSON file should be loaded into memory')
+def step_impl(context):
+    # Testing implementation details rather than outcomes
+    assert_that(context.faker.data_provider.data, is_not(none()))
+    assert isinstance(context.faker.data_provider, StaticDataProvider)
+```
 
 ## Implementation Phase
 - Implement only what's needed for the current feature

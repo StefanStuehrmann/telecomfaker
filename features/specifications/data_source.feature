@@ -1,18 +1,18 @@
- Feature: Telecom Data Source Management
-  As a developer working with telecom data
-  I want to use different data sources for telecom information
-  So that I can have up-to-date and accurate data
+Feature: Telecom Data Source Management
+  As a telecom test engineer
+  I want to use different sources of telecom operator data
+  So that I can create realistic test scenarios with accurate information
 
   Background:
-    Given the TelecomFaker package is installed
+    Given I have installed the TelecomFaker package
 
-  Scenario: Use default static data source
-    When I create a TelecomFaker instance with default settings
-    Then it should use the static JSON data source
-    And I should be able to generate valid operator information
+  Scenario: Use built-in telecom data for quick testing
+    When I need to quickly generate telecom test data
+    Then I should be able to use TelecomFaker without any configuration
+    And it should provide realistic operator information out of the box
 
-  Scenario: Fallback to static data when data source is unavailable
-    Given the data source is unavailable
-    When I request a random operator
-    Then I should receive an appropriate error message
-    And the error should suggest checking the data source
+  Scenario: Handle unavailable data sources gracefully
+    Given I am working in an environment with restricted network access
+    When I try to generate telecom operator data
+    Then I should receive a clear error message if data sources are unavailable
+    And the error should help me troubleshoot the data source issue
