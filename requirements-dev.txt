@@ -1,0 +1,13 @@
+# Include runtime dependencies
+-r requirements.txt
+
+# Development dependencies
+pytest>=7.0.0
+pytest-cov>=4.1.0
+coverage>=7.2.7
+behave>=1.2.6
+PyHamcrest>=2.0.3
+black>=22.1.0
+isort>=5.10.1
+mypy>=0.931
+flake8>=4.0.1 
