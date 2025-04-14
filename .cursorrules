@@ -1,47 +1,63 @@
-You are an expert in Python development.
+# Iterative Development Process Guidelines
 
-**Key Principles**
-- Write concise, technical responses with accurate Python examples.
-- Use functional, declarative programming; avoid classes where possible.
-- Prefer iteration and modularization over code duplication.
-- Use descriptive variable names with auxiliary verbs (e.g., is_active, has_permission).
-- Use lowercase with underscores for directories and files (e.g., tasks/data_processing.py).
+## Core Development Process
+- Never provide complete solutions upfront; focus on one feature at a time
+- Always follow this strict sequence for each feature:
+  1. Design & Documentation: Start with diagrams and clear documentation
+  2. Feature Specification: Define a single feature using Gherkin syntax
+  3. Behavior Testing: Write BDD tests for the specified feature only
+  4. Implementation: Only write code after the above steps are complete
+- Do not proceed to the next step without explicit confirmation
+- Do not show any implementation code until documentation, specification, and tests are complete
+- Use mermaid diagrams for all design phases
+- Wait for explicit confirmation before proceeding to the next development phase
 
-**Development Process**
-- Our process is Component Design, Functional Requirements with Gherking syntax and then we will recurse over behaviour test and code.
-- Always start with a design diagram before starting to code.
-- We will use small incremental steps to build the project, so only write tests when explicitly asked to do so and only write code when explicitly asked to do so.
-- Use mermaid diagrams for the design phase.
+## Design Phase
+- Begin every feature with a design diagram
+- Document the purpose, inputs, outputs, and constraints
+- Discuss trade-offs and design decisions before proceeding
 
-**Python**
-- Always use f strings for string formatting isntead of concatinating strings
-- Use type hints for all function signatures. Prefer Pydantic models over raw dictionaries for input validation.
-- For single-line statements in conditionals, omit curly braces.
-- Use concise, one-line syntax for simple conditional statements (e.g., `if condition: execute_task()`).
+## Specification Phase
+- Use Gherkin syntax (Given/When/Then) to specify behavior
+- Focus on one user story or feature at a time
+- Define acceptance criteria clearly
 
-**Error Handling and Validation**
-- Prioritize error handling and edge cases:
-- Handle errors and edge cases at the beginning of functions.
-- Use early returns for error conditions to avoid deeply nested `if` statements.
-- Place the happy path last in the function for improved readability.
-- Avoid unnecessary `else` statements; use the `if-return` pattern instead.
-- Use guard clauses to handle preconditions and invalid states early.
-- Implement proper error logging and user-friendly error messages.
-- Use custom error types or error factories for consistent error handling.
+## Testing Phase
+- Write behavior tests that match the Gherkin specifications
+- Focus on testing the behavior, not the implementation
+- Only proceed to implementation after tests are reviewed
 
-**Guidelines**
-- Always start with a design diagram before starting to code.
-- Use mermaid diagrams for the design phase.
-- Use functional components (plain functions) and Pydantic models for input validation and response schemas.
-- Use declarative task definitions with clear return type annotations.
-- Use `def` for synchronous operations and `async def` for asynchronous ones.
-- Use middleware for logging, error monitoring, and performance optimization.
+## Implementation Phase
+- Implement only what's needed for the current feature
+- Follow the test requirements strictly
+- Refactor only after the feature is working
 
-**Performance Optimization**
-- Optimize data serialization and deserialization with Pydantic.
-- Minimize blocking I/O operations; use asynchronous operations for all database calls and external API requests.
+# Python Development Standards
 
-**Key Conventions**
-- Favor asynchronous and non-blocking flows.
-- Use dedicated async functions for database and external API operations.
-- Structure tasks and dependencies clearly to optimize readability and maintainability.
+## Key Principles
+- Write concise, technical responses with accurate Python examples
+- Use functional, declarative programming; avoid classes where possible
+- Prefer iteration and modularization over code duplication
+- Use descriptive variable names with auxiliary verbs (e.g., is_active, has_permission)
+- Use lowercase with underscores for directories and files (e.g., tasks/data_processing.py)
+
+## Python Coding Standards
+- Always use f-strings for string formatting instead of concatenating strings
+- Use type hints for all function signatures
+- Prefer Pydantic models over raw dictionaries for input validation
+- Use concise, one-line syntax for simple conditional statements (e.g., `if condition: execute_task()`)
+
+## Error Handling and Validation
+- Handle errors and edge cases at the beginning of functions
+- Use early returns for error conditions to avoid deeply nested `if` statements
+- Place the happy path last in the function for improved readability
+- Avoid unnecessary `else` statements; use the `if-return` pattern instead
+- Use guard clauses to handle preconditions and invalid states early
+- Implement proper error logging and user-friendly error messages
+- Use custom error types or error factories for consistent error handling
+
+## Architecture Guidelines
+- Use functional components (plain functions) and Pydantic models for validation
+- Use declarative task definitions with clear return type annotations
+- Use `def` for synchronous operations and `async def` for asynchronous ones
+- Use middleware for logging, error monitoring, and performance optimization
