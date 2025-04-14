@@ -9,6 +9,10 @@ jobs:
   build-and-publish:
     name: Build and Publish TelecomFaker
     runs-on: ubuntu-latest
+    # Set permissions needed for trusted publishing
+    permissions:
+      id-token: write  # Required for trusted publishing
+      contents: read   # Required to checkout the code
     
     steps:
     - name: Check out repository
@@ -40,7 +44,9 @@ jobs:
         
     - name: Publish to PyPI
       if: github.event_name == 'release'
+      # Use trusted publishing instead of token-based auth
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        user: __token__
-        password: ${{ secrets.PYPI_API_TOKEN }} 
+        # No need for password when using trusted publishing
+        # Just need to specify the PyPI repository
+        repository-url: https://upload.pypi.org/legacy/ 
