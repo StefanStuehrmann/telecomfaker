@@ -1,5 +1,5 @@
 import random
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, Union
 
 from telecomfaker.providers import LocalJsonProvider
 
@@ -18,12 +18,34 @@ class TelecomFaker:
         self.data_provider = data_provider or LocalJsonProvider()
         self.random = random
     
-    def set_seed(self, seed: int) -> None:
+    def set_seed(self, seed: Union[int, float, str, bytes, bytearray]) -> None:
         """
         Set a random seed for consistent data generation.
         
+        This method allows you to generate reproducible sequences of operators,
+        which is useful for testing and debugging. Using the same seed value
+        will produce the same sequence of operators across different runs.
+        
         Args:
-            seed: An integer to use as the random seed
+            seed: A value to use as the random seed. Can be an integer, float,
+                 string, bytes, or bytearray.
+                 
+        Example:
+            ```python
+            # Create two separate instances
+            faker1 = TelecomFaker()
+            faker2 = TelecomFaker()
+            
+            # Set the same seed
+            seed_value = 42
+            faker1.set_seed(seed_value)
+            faker2.set_seed(seed_value)
+            
+            # These will be identical
+            operator1 = faker1.generate_operator()
+            operator2 = faker2.generate_operator()
+            assert operator1 == operator2
+            ```
         """
         self.random.seed(seed)
     
@@ -35,7 +57,7 @@ class TelecomFaker:
             A dictionary containing operator information
             
         Raises:
-            Exception: If the data source is unavailable or contains no operators
+            RuntimeError: If the data source is unavailable or contains no operators
         """
         try:
             # Get the data from the provider

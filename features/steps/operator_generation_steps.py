@@ -79,23 +79,52 @@ def step_impl(context):
     # Verify the error message mentions the country
     assert_that(context.data['error'], contains_string(context.data['country']))
 
-@when('I need consistent operator data across test runs')
+@given('I need predictable test data across multiple test runs')
 def step_impl(context):
-    # Set a seed for reproducible results
-    context.seed = 42
-    context.faker.set_seed(context.seed)
-
-@then('I should be able to use a seed value')
-def step_impl(context):
-    # Generate first operator
-    context.data['operator1'] = context.faker.generate_operator()
+    # Initialize context data dictionary if needed
+    if not hasattr(context, 'data'):
+        context.data = {}
     
-    # Reset and use the same seed again
-    new_faker = TelecomFaker()
-    new_faker.set_seed(context.seed)
-    context.data['operator2'] = new_faker.generate_operator()
+    # Store the seed we'll use for reproducibility
+    context.seed_value = 42
+    
+    # Create our first faker instance with a descriptive name
+    context.faker_first_run = TelecomFaker()
 
-@then('the generated data should be identical for the same seed')
+@when('I use the same seed value for each test run')
+def step_impl(context):
+    # Set the seed on the first faker
+    context.faker_first_run.set_seed(context.seed_value)
+    
+    # Generate the first operator
+    context.operator_first_run = context.faker_first_run.generate_operator()
+    
+    # Create a second faker instance to simulate a different test run
+    context.faker_second_run = TelecomFaker()
+    context.faker_second_run.set_seed(context.seed_value)
+    
+    # Generate the second operator
+    context.operator_second_run = context.faker_second_run.generate_operator()
+
+@then('I should get identical operator data each time')
 def step_impl(context):
     # Verify both operators are identical
-    assert_that(context.data['operator1'], equal_to(context.data['operator2']))
+    assert_that(context.operator_first_run, equal_to(context.operator_second_run))
+    
+    # Generate another operator with the first faker and verify it's different
+    # This ensures the seed is working correctly and not just returning the same value always
+    context.operator_next = context.faker_first_run.generate_operator()
+    assert_that(context.operator_first_run, is_not(equal_to(context.operator_next)))
+
+@then('I can rely on this consistency for automated testing')
+def step_impl(context):
+    # Create a third faker instance with the same seed
+    context.faker_verification = TelecomFaker()
+    context.faker_verification.set_seed(context.seed_value)
+    
+    # Generate an operator and verify it matches the first one
+    context.operator_verification = context.faker_verification.generate_operator()
+    assert_that(context.operator_verification, equal_to(context.operator_first_run))
+    
+    # This demonstrates that the seed provides consistent results
+    # across different instances, which is essential for automated testing
