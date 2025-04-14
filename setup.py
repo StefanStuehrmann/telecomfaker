@@ -36,7 +36,7 @@ setup(
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Testing",
-        "Topic :: Telecommunications",
+        "Topic :: Communications",
     ],
     packages=find_packages(),
     include_package_data=True,
